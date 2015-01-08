@@ -40,8 +40,6 @@ $allow = false;
 
 </style>
 <div class="j2store j2store-productlist-view">
-	<form action="<?php echo $action; ?>" method="post" name="adminForm"  id="adminForm" enctype="multipart/form-data">
-
 	<div class="row">
 		<?php
 		//set span class as 12 in case modules are disabled
@@ -61,116 +59,122 @@ $allow = false;
 		<?php endif;?>
 
 		<div class="<?php echo $class;?>">
-		<?php if($this->layoutparams->get('show_product_list_filter_selection', 1)): ?>
-			<?php if(isset($this->lists['category_title'])
-						|| isset($this->lists['search'])
-						|| isset($this->lists['search'])
-						|| isset($this->lists['filter_price_from'])
-						|| isset($this->lists['filter_price_to'])
-						|| isset($this->lists['filter_tag_title'])
-						|| count(JModuleHelper::getModule('j2store_module_sorting'))
-						): ?>
-				<!--  Form Starts here again -->
-					<div class="j2store-filters-selection">
-						<!-- List showing the filter type used to search the product -->
-						<ul class="j2store-filter-lists">
-							<?php if(!empty($this->lists['category_title'])) : ?>
-							<!-- Based on the category this shows which product is currently choosed -->
-							<li class="j2store-product-filter filter-categories">
-								<?php echo JText::_('J2STORE_CATEGORIES');?><span> <?php echo ">" ;?> </span><?php echo $this->lists['category_title'];?>
-							</li>
-							<?php endif; ?>
+		    <div class="row">
+                <form action="<?php echo $action; ?>" method="post" name="adminForm"  id="adminForm">
+                    <?php if($this->layoutparams->get('show_product_list_filter_selection', 1)): ?>
+                        <?php if(isset($this->lists['category_title'])
+                            || isset($this->lists['search'])
+                            || isset($this->lists['search'])
+                            || isset($this->lists['filter_price_from'])
+                            || isset($this->lists['filter_price_to'])
+                            || isset($this->lists['filter_tag_title'])
+                            || count(JModuleHelper::getModule('j2store_module_sorting'))
+                        ): ?>
+                            <!--  Form Starts here again -->
+                            <div class="j2store-filters-selection">
+                                <!-- List showing the filter type used to search the product -->
+                                <ul class="j2store-filter-lists">
+                                    <?php if(!empty($this->lists['category_title'])) : ?>
+                                        <!-- Based on the category this shows which product is currently choosed -->
+                                        <li class="j2store-product-filter filter-categories">
+                                            <?php echo JText::_('J2STORE_CATEGORIES');?><span> <?php echo ">" ;?> </span><?php echo $this->lists['category_title'];?>
+                                        </li>
+                                    <?php endif; ?>
 
-							<?php if(isset($this->lists['search'])): ?>
-							<!-- This shows what data have been entered in the filter  -->
-							<li class="j2store-product-filter filter-search">
-								<?php echo $this->lists['search'];?>
-							</li>
-							<?php endif; ?>
+                                    <?php if(isset($this->lists['search'])): ?>
+                                        <!-- This shows what data have been entered in the filter  -->
+                                        <li class="j2store-product-filter filter-search">
+                                            <?php echo $this->lists['search'];?>
+                                        </li>
+                                    <?php endif; ?>
 
-							<!-- this shows the price filters -->
-							<?php if(isset($this->lists['filter_price_from']) || (isset($this->lists['filter_price_to']))):?>
-							<li class="j2store-product-filter filter-price-range">
-								<?php echo JText::_('J2STORE_PRICES');?>
-								<?php echo J2StorePrices::number($this->lists['filter_price_from']);?>-<?php echo J2StorePrices::number($this->lists['filter_price_to']);?>
-								<a class="j2store-product-reset-filter btn btn-inverse btn-mini" href="<?php echo JRoute::_("&filter_price_from=&filter_price_to=&rangeselected="); ?>">
-						 			<i class="icon-remove glyphicon glyphicon-remove"></i>
-							 	</a>
-							</li>
-							<?php endif;?>
+                                    <!-- this shows the price filters -->
+                                    <?php if(isset($this->lists['filter_price_from']) || (isset($this->lists['filter_price_to']))):?>
+                                        <li class="j2store-product-filter filter-price-range">
+                                            <?php echo JText::_('J2STORE_PRICES');?>
+                                            <?php echo J2StorePrices::number($this->lists['filter_price_from']);?>-<?php echo J2StorePrices::number($this->lists['filter_price_to']);?>
+                                            <a class="j2store-product-reset-filter btn btn-inverse btn-mini" href="<?php echo JRoute::_("&filter_price_from=&filter_price_to=&rangeselected="); ?>">
+                                                <i class="icon-remove glyphicon glyphicon-remove"></i>
+                                            </a>
+                                        </li>
+                                    <?php endif;?>
 
-							<!-- shows the selected tags -->
-							<?php if(!empty( $this->lists['filter_tag'])):?>
-							<li class="j2store-product-filter filter-tags"><?php echo JText::_('J2STORE_TAGS');?>	: <?php echo $this->lists['filter_tag_title'];?></li>
-								<?php if(!empty($this->lists['filter_tag'])):?>
-									<a class="j2store-product-reset-filter btn btn-inverse btn-mini" href="<?php echo JRoute::_("&filter_tag=&&filter_tag_title="); ?>">
-										<i class="icon-remove glyphicon glyphicon-remove"></i>
-									</a>
-								<?php endif;?>
-							</li>
-							<?php endif;?>
+                                    <!-- shows the selected tags -->
+                                    <?php if(!empty( $this->lists['filter_tag'])):?>
+                                        <li class="j2store-product-filter filter-tags"><?php echo JText::_('J2STORE_TAGS');?>	: <?php echo $this->lists['filter_tag_title'];?></li>
+                                        <?php if(!empty($this->lists['filter_tag'])):?>
+                                            <a class="j2store-product-reset-filter btn btn-inverse btn-mini" href="<?php echo JRoute::_("&filter_tag=&&filter_tag_title="); ?>">
+                                                <i class="icon-remove glyphicon glyphicon-remove"></i>
+                                            </a>
+                                        <?php endif;?>
+                                        </li>
+                                    <?php endif;?>
 
-						</ul>
-					</div>
+                                </ul>
+                            </div>
 
-					<!-- Sorting Module -->
-					<?php if($this->layoutparams->get('show_product_list_filter_sort', 0)): ?>
-						<?php
-						$attr	= array("class"=>"input mod-j2store-product-sorting","onchange"=>"this.form.submit()");
-						?>
-						<div class="j2store-filter-sorting">
- 							<?php echo JHTML::_('select.genericlist', $this->filters['sort_fields'], 'filter_sort',$attr,'value','text',$this->lists['filter_sort']); ?>
-						</div>
-					<?php endif; ?>
+                            <!-- Sorting Module -->
+                            <?php if($this->layoutparams->get('show_product_list_filter_sort', 0)): ?>
+                                <?php
+                                $attr	= array("class"=>"input mod-j2store-product-sorting","onchange"=>"this.form.submit()");
+                                ?>
+                                <div class="j2store-filter-sorting">
+                                    <?php echo JHTML::_('select.genericlist', $this->filters['sort_fields'], 'filter_sort',$attr,'value','text',$this->lists['filter_sort']); ?>
+                                </div>
+                            <?php endif; ?>
 
-					<?php if($this->layoutparams->get('show_product_list_filter_search', 0)): ?>
-							<?php echo $this->loadTemplate('search'); ?>
-					<?php endif; ?>
+                            <?php if($this->layoutparams->get('show_product_list_filter_search', 0)): ?>
+                                <?php echo $this->loadTemplate('search'); ?>
+                            <?php endif; ?>
 
-				<?php endif; ?>
-			<?php endif; ?>
-			<input type="hidden" name="option" value="com_j2store" />
-		<input type="hidden" name="view" value="products" />
-		<input type="hidden" name="task" value="list" />
-		<input type="hidden" name="list_limit" value="<?php echo $this->list_limit;?>" />
-		<?php echo JHTML::_( 'form.token' ); ?>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                    <input type="hidden" name="option" value="com_j2store" />
+                    <input type="hidden" name="view" value="products" />
+                    <input type="hidden" name="task" value="list" />
+                    <input type="hidden" name="list_limit" value="<?php echo $this->list_limit;?>" />
+                    <?php echo JHTML::_( 'form.token' ); ?>
+                </form>
+		    </div>
+
+            <!-- Products -->
+            <?php if(isset($this->items) && $this->items):?>
+                <?php
+                $total = count($this->items);
+                $col = $this->layoutparams->get('list_no_of_columns', 1);
+                $counter = 0;
+                ?>
+                <?php foreach($this->items as $item): ?>
+
+                    <?php $rowcount = ((int) $counter % (int) $col) + 1; ?>
+                    <?php if ($rowcount == 1) : ?>
+                        <?php $row = $counter / $col; ?>
+                        <div class="j2store-products-row cols-<?php echo (int) $col;?> <?php echo 'row-'.$row; ?> row">
+                    <?php endif; ?>
+                    <div class="span<?php echo round((12 / $col));?> col-sm-<?php echo round((12 / $col));?>">
+                        <div class="j2store-product-single j2store-product-single-<?php echo $item->product_id; ?> column-<?php echo $rowcount;?>"
+                            itemscope itemtype="http://schema.org/Product">
+                            <?php
+                            $this->item = &$item;
+                            echo $this->loadTemplate('item');
+                            ?>
+                        </div><!-- end item -->
+                        <?php $counter++; ?>
+                    </div><!-- end span -->
+                    <?php if (($rowcount == $col) or ($counter == $total)) : ?>
+                        </div><!-- end row -->
+                    <?php endif; ?>
+
+                <?php endforeach;?>
+            <?php else:?>
+                <div class="alert alert-warning">
+                    <?php echo JText::_('J2STORE_PRODUCT_NO_ITEMS_TO_DISPLAY');?>
+                </div>
+            <?php endif;?>
+
 		</div>
 	</div>
-</form>
-			<!-- Products -->
-			<?php if(isset($this->items) && $this->items):?>
-					<?php
-						$total = count($this->items);
-						$col = $this->layoutparams->get('list_no_of_columns', 1);
-						$counter = 0;
-					?>
-					<?php foreach($this->items as $item): ?>
 
-					<?php $rowcount = ((int) $counter % (int) $col) + 1; ?>
-					<?php if ($rowcount == 1) : ?>
-						<?php $row = $counter / $col; ?>
-					<div class="j2store-products-row cols-<?php echo (int) $col;?> <?php echo 'row-'.$row; ?> row-fluid">
-					<?php endif; ?>
-						<div class="span<?php echo round((12 / $col));?> col-sm-<?php echo round((12 / $col));?>">
-							<div class="j2store-product-single j2store-product-single-<?php echo $item->product_id; ?> column-<?php echo $rowcount;?>"
-								itemscope itemtype="http://schema.org/Product">
-								<?php
-								$this->item = &$item;
-								echo $this->loadTemplate('item');
-							?>
-							</div><!-- end item -->
-							<?php $counter++; ?>
-						</div><!-- end span -->
-						<?php if (($rowcount == $col) or ($counter == $total)) : ?>
-					</div><!-- end row -->
-						<?php endif; ?>
-
-					<?php endforeach;?>
-			<?php else:?>
-			<div class="alert alert-warning">
-				<?php echo JText::_('J2STORE_PRODUCT_NO_ITEMS_TO_DISPLAY');?>
-			</div>
-			<?php endif;?>
 
 	<!-- Footer Starts Here -->
 	<div class="j2store-product-footer row">
