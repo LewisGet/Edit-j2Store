@@ -523,6 +523,7 @@ class J2StoreModelProducts extends J2StoreModel
 		if(isset($cat)){
 			$query->where('id IN ('.$selected_cat.')');
 		}
+		$query->order('lft ASC');
 		$db->setQuery($query);
 		//load objectlist and return the data
 		$results = $db->loadObjectList();
