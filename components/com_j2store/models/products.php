@@ -273,7 +273,43 @@ class J2StoreModelProducts extends J2StoreModel
 		}elseif($filter_category){
 			//check categoryid exists in the state
 			//fetch the items nased on the query
-			$query->where('p.catid='.$filter_category);
+			
+			// 是否顯示子分類
+			if ($menu->params->get('show_sub_categories', 0))
+			{
+				$db = JFactory::getDbo();
+				$categoriesQuery = $db->getQuery(true);
+				
+				// get category lft rgt
+				$categoriesQuery->select('lft, rgt')->from('#__categories')->where('id='.$filter_category);
+				
+				$db->setQuery($categoriesQuery);
+				$category = $db->loadObject();
+				
+				// clear query
+				$categoriesQuery = $db->getQuery(true);
+				
+				// load child category
+				$categoriesQuery->select('id')->from('#__categories')->where('lft >= ' . $category->lft . ' AND rgt <= ' . $category->rgt);
+				
+				$db->setQuery($categoriesQuery);
+				$categorys = $db->loadObjectList();
+				
+				$cids = array();
+				
+				foreach($categorys as $cat)
+				{
+					$cids[] = $cat->id;
+				}
+				
+				$cids = implode(',',$cids);
+				
+				$query->where('p.catid IN (' . $cids . ')');
+			}
+			else
+			{
+				$query->where('p.catid='.$filter_category);
+			}
 		}
 
 		if(!$user->authorise('core.admin'))
