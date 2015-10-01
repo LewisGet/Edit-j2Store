@@ -29,11 +29,21 @@ $remove_pricefilter_url = "index.php";
 		<ul id="j2store_categories_mod" class="unstyled nav nav-stacked">
 			<?php foreach ($this->filters['filter_categories'] as $item) : ?>
 			<li class="j2product_categories level<?php echo $item->level?>">
-			<?php if($item->level >1):?>
-				<a href="<?php echo JRoute::_( "&filter_category=".$item->id."&category_title=".$item->title); ?>"><span class="j2store-item-rootcategory"><?php echo str_repeat("-", $item->level);?><?php echo $item->title; ?></span></a>
-			<?php else:?>
-				<a href="<?php echo JRoute::_( "&filter_category=".$item->id."&category_title=".$item->title); ?>"><span class="j2store-item-rootcategory"><?php echo $item->title; ?></span></a>
-			<?php endif;?>
+
+				<?php $categoryParams = json_decode($item->params); ?>
+
+				<a href="<?php echo JRoute::_( "&filter_category=".$item->id."&category_title=".$item->title); ?>">
+
+					<?php if(isset($categoryParams->image) and !empty($categoryParams->image)): ?>
+						<img class="j2store-category-icon" src="<?php echo $categoryParams->image; ?>" />
+					<?php endif; ?>
+
+					<?php if($item->level >1):?>
+						<span class="j2store-item-rootcategory"><?php echo str_repeat("-", $item->level);?><?php echo $item->title; ?></span>
+					<?php else:?>
+						<span class="j2store-item-rootcategory"><?php echo $item->title; ?></span>
+					<?php endif;?>
+				</a>
 
 			</li>
 			<?php endforeach; ?>

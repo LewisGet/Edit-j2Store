@@ -152,3 +152,11 @@ padding: 5px;
 .j2store-filter-product-search {
 	display: inline-block;
 }
+
+.j2store-category-icon {
+	display: block;
+	float: left;
+	max-width: 50px;
+	max-height: 50px;
+}
+
