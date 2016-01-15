@@ -1,7 +1,10 @@
 <?php $cat = $this->filters['nowStateCat']; ?>
 <?php if (! empty($cat) and is_object($cat)): ?>
     <li>
-        <?php echo $cat->title; ?>
+        <a href="<?php echo JRoute::_("&filter_category={$cat->id}&category_title=" . urlencode($cat->title)); ?>">
+            <?php echo $cat->title; ?>
+        </a>
+
         <?php
 
         // 如果有女建立下個家庭
