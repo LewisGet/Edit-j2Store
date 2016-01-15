@@ -566,6 +566,121 @@ class J2StoreModelProducts extends J2StoreModel
 		return $results;
 	}
 
+    /**
+     * @param $cats
+     * @return array
+     */
+    public function sortCategories($cats)
+    {
+        $cloneCats = $cats;
+        $treeCats = array();
+        $treeKey = 0;
 
+        foreach ($cats as $cat)
+        {
+            $parent = $this->catFoundClosestParent($cat, $cloneCats);
 
+            $treeCats[$treeKey] = $cat;
+
+            // is root
+            if ($parent == null)
+            {
+                $treeCats[$treeKey]->isRoot = true;
+                $treeCats[$treeKey]->parentCat = null;
+            }
+            else
+            {
+                // 如果沒有女
+                if (! isset($parent->childCat))
+                {
+                    $parent->childCat = array();
+                }
+
+                // 這是他的女
+                $parent->childCat[] = $cat;
+
+                $treeCats[$treeKey]->isRoot = false;
+                $treeCats[$treeKey]->parentCat = $parent;
+            }
+
+            $treeKey++;
+        }
+
+        return $treeCats;
+    }
+
+    public function catFoundClosestParent($cat, $parents)
+    {
+        $returnValue = null;
+
+        foreach ($parents as $parent)
+        {
+            if ($this->isCloserParent($cat, $returnValue, $parent))
+            {
+                $returnValue = $parent;
+            }
+        }
+
+        return $returnValue;
+    }
+
+    /**
+     * @param $cat
+     * @param $now
+     * @param $new
+     * @return bool
+     */
+    public function isCloserParent($cat, $now, $new)
+    {
+        // for init
+        if (! is_object($now))
+        {
+            if ($this->isParent($new, $cat))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        if (! $this->between($new->lft, $cat->lft, $now->lft))
+        {
+            return false;
+        }
+
+        if (! $this->between($new->rgt, $now->rgt, $cat->rgt))
+        {
+            return false;
+        }
+
+        if (! $this->isParent($new, $cat))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param $parent
+     * @param $sum
+     * @return bool
+     */
+    public function isParent($parent, $sum)
+    {
+        return (($parent->lft < $sum->lft) and ($parent->rgt > $sum->rgt));
+    }
+
+    /**
+     * @param $v
+     * @param $max
+     * @param $min
+     * @return bool
+     */
+    public function between($v, $max, $min)
+    {
+        return (($max > $v) and ($v > $min));
+    }
 }
