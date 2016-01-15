@@ -12,7 +12,7 @@
         $hiddenFunction = true;
     }
     ?>
-    <ul class="<?php if ($hiddenFunction) { echo " hiddenFunction "; } ?>">
+    <ul class="j2store-category-block <?php if ($hiddenFunction) { echo " hiddenFunction "; } ?>">
         <?php
         foreach ($nowStateCats as $cat)
         {

@@ -81,3 +81,26 @@ $remove_pricefilter_url = "index.php";
 	<?php endif; ?>
 
 </div>
+<style>
+    #j2store_category > .j2store-category-block
+    {
+        margin: 0;
+        padding: 0;
+    }
+
+    .j2store-category-block
+    {
+        list-style: none;
+    }
+
+    .j2store-categories-href
+    {
+        display: block;
+    }
+
+    .j2store-categories-href > .j2store-category-icon
+    {
+        float: none;
+        display: inline-block;
+    }
+</style>
