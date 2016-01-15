@@ -104,3 +104,25 @@ $remove_pricefilter_url = "index.php";
         display: inline-block;
     }
 </style>
+<script>
+    jQuery(".hiddenFunction").click(function(e){
+        e.preventDefault();
+
+        var workingId = jQuery(this).attr("data-cat-id");
+
+        var workingDom = jQuery("#j2store-categories-parent-id-" + workingId);
+
+        var workingState = workingDom.attr("data-working-state");
+
+        if ("1" == workingState)
+        {
+            workingDom.attr("style", "overflow: hidden; height: 0px;");
+            workingDom.attr("data-working-state", "0");
+        }
+        else
+        {
+            workingDom.attr("style", "");
+            workingDom.attr("data-working-state", "1");
+        }
+    });
+</script>

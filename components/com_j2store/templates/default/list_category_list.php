@@ -1,10 +1,24 @@
 <?php $cat = $this->filters['nowStateCat']; ?>
 <?php if (! empty($cat) and is_object($cat)): ?>
-    <?php $catParams = json_decode($cat->params); ?>
-    <li>
-        <a class="j2store-categories-href" href="<?php echo JRoute::_("&filter_category={$cat->id}&category_title=" . urlencode($cat->title)); ?>">
+    <?php
+    $catParams = json_decode($cat->params);
 
-            <?php if(isset($catParams->image) and !empty($catParams->image)): ?>
+    // hidden function
+    $hiddenCats = $this->filters['filter_hidden_categories'];
+    $hiddenFunction = false;
+
+    if (is_array($hiddenCats) and in_array($cat->id, $hiddenCats))
+    {
+        $hiddenFunction = true;
+    }
+    ?>
+    <li>
+        <a
+            class="j2store-categories-href <?php echo $hiddenFunction ? " hiddenFunction " : ""; ?>"
+            href="<?php echo JRoute::_("&filter_category={$cat->id}&category_title=" . urlencode($cat->title)); ?>"
+            data-cat-id="<?php echo $cat->id; ?>">
+
+            <?php if(isset($catParams->image) and ! empty($catParams->image)): ?>
                 <img class="j2store-category-icon" src="<?php echo $catParams->image; ?>" />
             <?php endif; ?>
 

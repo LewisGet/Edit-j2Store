@@ -4,6 +4,9 @@
     $nowStateCat = $this->filters['nowStateCat'];
     $nowStateCats = $this->filters['nowStateCats'];
 
+    $nowStateCatId = (is_object($nowStateCat)) ? "j2store-categories-parent-id-{$nowStateCat->id}" : "j2store-categories-root";
+
+    // hidden function
     $hiddenCats = $this->filters['filter_hidden_categories'];
     $hiddenFunction = false;
 
@@ -12,7 +15,11 @@
         $hiddenFunction = true;
     }
     ?>
-    <ul class="j2store-category-block <?php if ($hiddenFunction) { echo " hiddenFunction "; } ?>">
+    <ul class="j2store-category-block" id="<?php echo $nowStateCatId; ?>"
+        <?php if ($hiddenFunction): ?>
+        data-working-state="0" style="overflow: hidden; height: 0px;"
+        <?php endif; ?>
+        >
         <?php
         foreach ($nowStateCats as $cat)
         {
