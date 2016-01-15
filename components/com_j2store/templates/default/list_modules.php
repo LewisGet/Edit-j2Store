@@ -26,9 +26,7 @@ $remove_pricefilter_url = "index.php";
 	<div class="j2store-product-filters category-filters">
 		<h4><?php echo JText::_('J2STORE_CATEGORY_FILTER_TITTLE'); ?></h4>
 		<div id="j2store_category">
-		<ul id="j2store_categories_mod" class="unstyled nav nav-stacked">
             <?php echo $this->loadTemplate('category'); ?>
-		</ul>
 		</div>
 
 	</div>
